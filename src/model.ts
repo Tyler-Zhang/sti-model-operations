@@ -4,12 +4,12 @@ import { InheritanceContainer } from './inheritanceContainer'
 import { ModelInformationContainer } from './informationContainer'
 import { Class } from './class'
 
-interface IModelInformation {
-  path: string[]
+export interface IModelOptionalArgs {
+  name?: string
 }
 
-interface IModelOptionalArgs {
-  name?: string
+interface IModelInformation {
+  path: string[]
 }
 
 export const modelContainer = new InheritanceContainer<Class>()
