@@ -1,6 +1,6 @@
 import { InheritanceContainer } from './containers/inheritanceContainer'
 import { getParentClass } from './classUtils'
-import { ClassInfoStore } from './classInfoStore'
+import { ModelMetadataStore } from './metadata/ModelMetadataStore'
 
 export const modelContainer = new InheritanceContainer<any>()
 
@@ -11,7 +11,7 @@ export const modelContainer = new InheritanceContainer<any>()
 export function STIModel() {
   return (klass: any) => {
     const parentClass = getParentClass(klass)
-    const parentClassInfoStore = ClassInfoStore.fromClass(parentClass)
+    const parentModelMetadataStore = ModelMetadataStore.fromClass(parentClass)
 
     /**
      * If parentClass already has a info store, it means that it's
@@ -21,13 +21,13 @@ export function STIModel() {
      * If the parentClass is not registered, this is a new to level
      * class
      */
-    let classInfoStore: ClassInfoStore
-    if (parentClassInfoStore) {
-      classInfoStore = ClassInfoStore.initOnClass(klass, {
-        pathPrefix: parentClassInfoStore.getTypePath()
+    let classInfoStore: ModelMetadataStore
+    if (parentModelMetadataStore) {
+      classInfoStore = ModelMetadataStore.initOnClass(klass, {
+        pathPrefix: parentModelMetadataStore.getTypePath()
       })
     } else {
-      classInfoStore = ClassInfoStore.initOnClass(klass)
+      classInfoStore = ModelMetadataStore.initOnClass(klass)
     }
 
     modelContainer.set(classInfoStore.getTypePath(), klass)
