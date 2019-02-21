@@ -1,79 +1,35 @@
-import assert from 'assert'
-import { plainToClass } from 'class-transformer'
-import { InheritanceContainer } from './inheritanceContainer'
-import { ModelInformationContainer } from './informationContainer'
-import { Class } from './class'
+import { InheritanceContainer } from './containers/inheritanceContainer'
+import { getParentClass } from './classUtils'
+import { ClassInfoStore } from './classInfoStore'
 
-export interface IModelOptionalArgs {
-  name?: string
-}
-
-interface IModelInformation {
-  path: string[]
-}
-
-export const modelContainer = new InheritanceContainer<Class>()
-export const modelInformationContainer = new ModelInformationContainer<IModelInformation>()
+export const modelContainer = new InheritanceContainer<any>()
 
 /**
  * Tag a class as a model so that it can be bound to operations
  * @param klass class that is being tagged
  */
-export function STIModel<C extends Class>({ name }: IModelOptionalArgs = {}) {
-  return (klass: C) => {
-    const className = name || klass.name
-    assert(className, 'Name must be defined on the class or passed in')
-    assert(
-      !modelInformationContainer.get(klass),
-      'A model with the same name was already registered'
-    )
+export function STIModel() {
+  return (klass: any) => {
+    const parentClass = getParentClass(klass)
+    const parentClassInfoStore = ClassInfoStore.fromClass(parentClass)
 
-    const parentClass: Class = Object.getPrototypeOf(klass)
-
-    let classPath: string[]
-
-    // Parent class is not registered so this is a new top level class
-    if (parentClass.name == '' || !modelInformationContainer.get(parentClass)) {
-      classPath = [className]
+    /**
+     * If parentClass already has a info store, it means that it's
+     * already registered and we should extend the typepath with
+     * the new class
+     *
+     * If the parentClass is not registered, this is a new to level
+     * class
+     */
+    let classInfoStore: ClassInfoStore
+    if (parentClassInfoStore) {
+      classInfoStore = ClassInfoStore.initOnClass(klass, {
+        pathPrefix: parentClassInfoStore.getTypePath()
+      })
     } else {
-      classPath = [...modelInformationContainer.get(parentClass)!.path, className]
+      classInfoStore = ClassInfoStore.initOnClass(klass)
     }
 
-    modelInformationContainer.set(klass, {
-      path: classPath
-    })
-
-    // Register model with container
-    modelContainer.set(classPath, klass)
-
-    return klass
-  }
-}
-
-/**
- * The class that each model should
- */
-export class STIBaseModel {
-  public static getClassName(_plainObject: any): string | null {
-    return null
-  }
-
-  public static build<T extends { getAppropriateClass(obj: any): any }>(
-    this: T,
-    plainObject: any
-  ): T {
-    const appropriateClass = this.getAppropriateClass(plainObject)
-    return (plainToClass(appropriateClass, plainObject) as any) as T
-  }
-
-  public static getAppropriateClass(plainObject: any) {
-    const className = this.getClassName(plainObject)
-    if (!className) {
-      return this
-    }
-    const classPath = modelInformationContainer.getByName(className)
-
-    assert(classPath, 'The model is not registered')
-    return modelContainer.get(classPath!.path)
+    modelContainer.set(classInfoStore.getTypePath(), klass)
   }
 }
