@@ -23,17 +23,20 @@ export class InheritanceContainer<Val> {
   }
 
   public getDeepest(path: Array<string | Symbol>) {
+    let deepestValue = null
     let currNode = this.store
-
     for (const pathPart of path) {
       if (currNode[pathPart as any]) {
         currNode = currNode[pathPart as any]
+        if (currNode[VALUE_SYM]) {
+          deepestValue = currNode[VALUE_SYM]
+        }
       } else {
         break
       }
     }
 
-    return currNode[VALUE_SYM]
+    return deepestValue
   }
 
   private getBlockAtPath(path: Array<string | Symbol>) {
