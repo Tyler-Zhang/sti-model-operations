@@ -1,3 +1,3 @@
-export { STIModel } from './model'
+export { STIModel } from './STIModel'
 
-export { STIBaseOperation, STIOperation } from './operation'
+export { STIBaseOperation, STIOperation } from './STIOperation'

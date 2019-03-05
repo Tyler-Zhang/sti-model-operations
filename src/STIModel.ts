@@ -1,4 +1,4 @@
-import { InheritanceContainer } from './containers/inheritanceContainer'
+import { InheritanceContainer } from './containers/InheritanceContainer'
 import { getParentClass } from './classUtils'
 import { ModelMetadataStore } from './metadata/ModelMetadataStore'
 
