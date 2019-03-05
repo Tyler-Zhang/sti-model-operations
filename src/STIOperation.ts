@@ -5,7 +5,7 @@ import { getParentClass } from './classUtils'
 import { ModelMetadataStore } from './metadata/ModelMetadataStore'
 import { ObjectType } from './common/ObjectType'
 
-const operationContainer = new InheritanceContainer<any>()
+export const operationContainer = new InheritanceContainer<any>()
 
 export function STIOperation(model: any) {
   return (klass: any) => {
