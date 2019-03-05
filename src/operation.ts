@@ -1,6 +1,5 @@
 import * as assert from 'assert'
-import * as util from 'util'
-import { InheritanceContainer } from './containers/inheritanceContainer'
+import { InheritanceContainer } from './containers/InheritanceContainer'
 import { OperationMetadataStore } from './metadata/OperationMetadataStore'
 import { getParentClass } from './classUtils'
 import { ModelMetadataStore } from './metadata/ModelMetadataStore'

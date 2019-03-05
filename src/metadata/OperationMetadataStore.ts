@@ -7,16 +7,8 @@ interface IOperationMetadataStoreInitOnClassOpts {
 }
 
 export class OperationMetadataStore extends ClassMetadataStore {
-  constructor(
-    private uniqueId: Symbol,
-    private typePath: Array<string | Symbol>,
-    private operationName: string
-  ) {
+  constructor(private typePath: Array<string | Symbol>, private operationName: string) {
     super()
-  }
-
-  public getUniqueId() {
-    return this.uniqueId
   }
 
   public getTypePath() {
@@ -28,15 +20,13 @@ export class OperationMetadataStore extends ClassMetadataStore {
   }
 
   /**
-   * Init the store onto a kalss
+   * Init the store onto a klass
    */
   static constructSelf(
     klass: any,
     modelPath: Array<string | Symbol>,
     { name = klass.name, operationName = name }: IOperationMetadataStoreInitOnClassOpts = {}
   ) {
-    const classSymbol = Symbol(name)
-
-    return new OperationMetadataStore(classSymbol, [operationName, ...modelPath], operationName)
+    return new OperationMetadataStore([operationName, ...modelPath], operationName)
   }
 }

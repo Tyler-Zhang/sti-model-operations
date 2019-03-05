@@ -2,16 +2,12 @@ import { ClassMetadataStore } from './ClassMetadataStore'
 
 interface IModelMetadataStoreInitOnClassOpts {
   name?: string
-  pathPrefix?: Symbol[]
+  pathPrefix?: string[]
 }
 
 export class ModelMetadataStore extends ClassMetadataStore {
-  constructor(private uniqueId: Symbol, private typePath: Symbol[]) {
+  constructor(private typePath: string[]) {
     super()
-  }
-
-  public getUniqueId() {
-    return this.uniqueId
   }
 
   public getTypePath() {
@@ -25,7 +21,6 @@ export class ModelMetadataStore extends ClassMetadataStore {
     klass: any,
     { name = klass.name, pathPrefix = [] }: IModelMetadataStoreInitOnClassOpts = {}
   ) {
-    const classSymbol = Symbol(name)
-    return new ModelMetadataStore(classSymbol, [...pathPrefix, classSymbol])
+    return new ModelMetadataStore([...pathPrefix, name])
   }
 }
