@@ -37,7 +37,7 @@ export class ClassMetadataStore {
     return metadataStore as T
   }
 
-  static constructSelf(...any: any[]) {
+  static constructSelf(..._args: any[]) {
     throw new Error('This method needs to be overrided')
   }
 }
