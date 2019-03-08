@@ -38,7 +38,7 @@ export function STIOperation(model: any) {
 }
 
 export abstract class STIBaseOperation {
-  abstract run(...args: any): any
+  abstract run(...args: any[]): any
 
   public static getAppropriateClass(...args: any[]) {
     const model = this.getModel(args)
