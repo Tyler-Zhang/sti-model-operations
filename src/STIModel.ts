@@ -2,7 +2,6 @@ import { plainToClass } from 'class-transformer'
 import { InheritanceContainer } from './InheritanceContainer'
 import { getParentClass } from './classUtils'
 import { ModelMetadataStore } from './metadata/ModelMetadataStore'
-import { ObjectType } from './common/ObjectType'
 
 export const modelContainer = new InheritanceContainer<any>()
 
@@ -33,28 +32,6 @@ export function STIModel() {
     }
 
     modelContainer.set(classInfoStore.getTypePath(), klass)
-  }
-}
-
-export abstract class STIBaseModel {
-  public static getAppropriateClass(...args: any[]) {
-    const typePath = this.getTypePath()
-    if (!typePath) {
-      return this
-    }
-    return modelContainer.get(typePath) || this
-  }
-
-  /**
-   * Override this: return the type path for the model
-   */
-  public static getTypePath(...args: any[]): string[] | null {
-    return null
-  }
-
-  public static build<T extends STIBaseModel>(this: ObjectType<T>, plainObject: any): T {
-    const appropriateClass = (this as any).getAppropriateClass(plainObject)
-    return (plainToClass(appropriateClass, plainObject) as any) as T
   }
 }
 

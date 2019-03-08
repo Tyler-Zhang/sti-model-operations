@@ -1,8 +1,8 @@
 import * as assert from 'assert'
-import { STIBaseOperation, STIModel, STIOperation, STIBaseModel } from '../src/sti-model-operations'
+import { STIBaseOperation, STIModel, STIOperation } from '../src/sti-model-operations'
 
 @STIModel()
-class ModelA extends STIBaseModel {}
+class ModelA {}
 
 @STIModel()
 class ModelA2 extends ModelA {}
