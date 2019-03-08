@@ -1,5 +1,5 @@
 import { plainToClass } from 'class-transformer'
-import { InheritanceContainer } from './containers/InheritanceContainer'
+import { InheritanceContainer } from './InheritanceContainer'
 import { getParentClass } from './classUtils'
 import { ModelMetadataStore } from './metadata/ModelMetadataStore'
 import { ObjectType } from './common/ObjectType'
