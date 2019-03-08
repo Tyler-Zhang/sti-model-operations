@@ -1,5 +1,5 @@
 import * as assert from 'assert'
-import { InheritanceContainer } from '../src/containers/inheritanceContainer'
+import { InheritanceContainer } from '../src/InheritanceContainer'
 
 describe('InheritanceContainer', () => {
   let inheritanceContainer: InheritanceContainer<string>
